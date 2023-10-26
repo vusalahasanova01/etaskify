@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.etaskify.repository.UserRepository">
+
+    <select id="findUserByEmail" resultType="User">
+        SELECT <include refid="userBaseColumns"/>
+        FROM etaskify.user u
+        WHERE u.username = #{username, jdbcType=NVARCHAR};
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO etaskify.user (EMAIL, USERNAME, PASSWORD, ORGANIZATION_ID)
+        VALUES (#{email, jdbcType=NVARCHAR},
+                #{username, jdbcType=NVARCHAR},
+                #{password, jdbcType=NVARCHAR},
+                #{organizationId});
+    </insert>
+
+    <update id="update">
+        UPDATE etaskify.user
+        SET EMAIL = #{email, jdbcType=NVARCHAR},
+            USERNAME = #{username, jdbcType=NVARCHAR},
+            PASSWORD = #{password, jdbcType=NVARCHAR},
+            ORGANIZATION_ID = #{organizationId}
+        WHERE ID = #{id};
+    </update>
+
+    <sql id="userBaseColumns">
+        u.id,
+        u.email,
+        u.username,
+        u.password,
+        u.organization_id
+    </sql>
+</mapper>
