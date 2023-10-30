@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.etaskify.repository.TaskRepository">
+
+    <select id="findAllTasks" resultType="Task">
+        SELECT <include refid="taskBaseColumns"/>
+        FROM etaskify.task t
+        LEFT JOIN etaskify.user u on u.id = t.to_id
+                                  or u.id = t.from_id
+        WHERE t.is_active = 1 and
+            u.organization_id = (SELECT u1.organization_id
+                                   FROM etaskify.user u1
+                                   WHERE u1.id = #{userId});
+    </select>
+
+    <select id="findUserTasks" resultType="Task">
+        SELECT <include refid="taskBaseColumns"/>
+        FROM etaskify.task t
+        WHERE t.to_id = #{userId} and t.is_active = 1;
+    </select>
+
+    <select id="findTaskById" resultType="Task">
+        SELECT <include refid="taskBaseColumns"/>
+        FROM etaskify.task t
+        WHERE t.id = #{id} and t.is_active = 1;
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO etaskify.task (TITLE, DESCRIPTION, FROM_ID, TO_ID, DEADLINE)
+        VALUES (#{title, jdbcType=NVARCHAR},
+                #{description, jdbcType=NVARCHAR},
+                #{fromId},
+                #{toId},
+                #{deadline});
+    </insert>
+
+    <update id="update">
+        UPDATE etaskify.task
+        SET TITLE = #{title, jdbcType=NVARCHAR},
+            DESCRIPTION = #{description, jdbcType=NVARCHAR},
+            TO_ID = #{toId},
+            DEADLINE = #{deadline}
+        WHERE ID = #{id};
+    </update>
+
+    <update id="updateStatus">
+        UPDATE etaskify.task
+        SET STATUS = #{statusId}
+        WHERE ID = #{id};
+    </update>
+
+    <update id="delete">
+        UPDATE etaskify.task
+        SET IS_ACTIVE = 0
+        WHERE ID = #{id};
+    </update>
+
+
+    <sql id="taskBaseColumns">
+        t.id,
+        t.title,
+        t.description,
+        t.from_id,
+        t.to_id,
+        t.deadline,
+        t.status
+    </sql>
+</mapper>

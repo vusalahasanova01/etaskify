@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.etaskify.repository.UserTempRepository">
+
+    <select id="findUserTempByUsername" resultType="UserTemp">
+        SELECT <include refid="userTempBaseColumns"/>
+        FROM etaskify.user_temp u
+        WHERE u.username = #{username};
+    </select>
+
+    <insert id="insertTempUser" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO etaskify.user_temp (EMAIL, USERNAME, PASSWORD, USER_ROLE, OTP_CODE)
+        VALUES (#{email, jdbcType=NVARCHAR},
+                #{username, jdbcType=NVARCHAR},
+                #{password, jdbcType=NVARCHAR},
+                #{userRole},
+                #{otpCode});
+    </insert>
+
+    <delete id="deleteTempUserByUsername">
+        DELETE FROM etaskify.user_temp
+        WHERE username = #{username};
+    </delete>
+
+    <sql id="userTempBaseColumns">
+        u.id,
+        u.email,
+        u.username,
+        u.password,
+        u.user_role,
+        u.otp_code
+    </sql>
+</mapper>

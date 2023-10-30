@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.etaskify.repository.OrganizationRepository">
+
+    <select id="findOrganizationByName" resultType="Organization">
+        SELECT <include refid="organizationBaseColumns"/>
+        FROM etaskify.organization o
+        WHERE o.name = #{name, jdbcType=NVARCHAR};
+    </select>
+
+
+    <select id="findOrganizationById" resultType="Organization">
+        SELECT <include refid="organizationBaseColumns"/>
+        FROM etaskify.organization o
+        WHERE o.id = #{id};
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO etaskify.organization (NAME, PHONE_NUMBER, ADDRESS)
+        VALUES (#{name, jdbcType=NVARCHAR},
+                #{phoneNumber},
+                #{address, jdbcType=NVARCHAR});
+    </insert>
+
+    <sql id="organizationBaseColumns">
+        o.id,
+        o.name,
+        o.phone_number,
+        o.address
+    </sql>
+</mapper>
