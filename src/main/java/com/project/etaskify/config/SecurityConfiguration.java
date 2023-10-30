@@ -18,9 +18,6 @@ public class SecurityConfiguration {
 
     private final String[] WHITE_LIST = new String[]{
             "/auth/**",
-//            "/auth/user/**",
-            "/ads/**",
-            "/util/**",
 
             "/v3/api-docs/**",
             "/swagger-ui/**",
@@ -30,12 +27,12 @@ public class SecurityConfiguration {
     };
 
     private final String[] USER_LIST = new String[]{
-//            "/ads/**",
-//            "/util/**"
+            "/task/user/**"
     };
 
     private final String[] ADMIN_LIST = new String[]{
-            "/admin/**"
+            "/admin/**",
+            "/task/admin/**"
     };
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -49,10 +46,10 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-//                .requestMatchers(ADMIN_LIST)
-//                .hasRole("ADMIN")
-//                .requestMatchers(USER_LIST)
-//                .hasRole("USER")
+                .requestMatchers(ADMIN_LIST)
+                .hasRole("ADMIN")
+                .requestMatchers(USER_LIST)
+                .hasRole("USER")
                 .requestMatchers(WHITE_LIST)
                 .permitAll()
                 .anyRequest()

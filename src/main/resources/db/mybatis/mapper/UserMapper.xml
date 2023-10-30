@@ -4,17 +4,36 @@
 
 <mapper namespace="com.project.etaskify.repository.UserRepository">
 
-    <select id="findUserByEmail" resultType="User">
+    <select id="findUserByUsername" resultType="User">
         SELECT <include refid="userBaseColumns"/>
         FROM etaskify.user u
         WHERE u.username = #{username, jdbcType=NVARCHAR};
     </select>
 
+    <select id="findUserById" resultType="User">
+        SELECT <include refid="userBaseColumns"/>
+        FROM etaskify.user u
+        WHERE u.id = #{id};
+    </select>
+
+    <select id="findUserByEmail" resultType="User">
+        SELECT <include refid="userBaseColumns"/>
+        FROM etaskify.user u
+        WHERE u.email = #{email, jdbcType=NVARCHAR};
+    </select>
+
+    <select id="findUsersByOrganizationId" resultType="User">
+        SELECT <include refid="userBaseColumns"/>
+        FROM etaskify.user u
+        WHERE u.organization_id = #{organizationId};
+    </select>
+
     <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        INSERT INTO etaskify.user (EMAIL, USERNAME, PASSWORD, ORGANIZATION_ID)
+        INSERT INTO etaskify.user (EMAIL, USERNAME, PASSWORD, USER_ROLE, ORGANIZATION_ID)
         VALUES (#{email, jdbcType=NVARCHAR},
                 #{username, jdbcType=NVARCHAR},
                 #{password, jdbcType=NVARCHAR},
+                #{userRole},
                 #{organizationId});
     </insert>
 
@@ -27,9 +46,19 @@
         WHERE ID = #{id};
     </update>
 
+    <update id="updateOrganizationId">
+        UPDATE etaskify.user u
+        SET u.ORGANIZATION_ID =
+            (SELECT o.id
+             FROM etaskify.organization o
+             WHERE o.name = #{organizationName})
+        WHERE u.USERNAME = #{username};
+    </update>
+
     <sql id="userBaseColumns">
         u.id,
         u.email,
+        u.user_role,
         u.username,
         u.password,
         u.organization_id

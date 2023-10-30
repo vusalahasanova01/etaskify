@@ -1,5 +1,7 @@
 package com.project.etaskify.config;
 
+import com.project.etaskify.model.mapper.OrganizationMapper;
+import com.project.etaskify.model.mapper.TaskMapper;
 import com.project.etaskify.model.mapper.UserMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +10,18 @@ import org.springframework.context.annotation.Configuration;
 public class MapperConfiguration {
 
     @Bean
-    public UserMapper userModelMapper() {
+    public UserMapper userMapper() {
         return UserMapper.INSTANCE;
+    }
+
+    @Bean
+    public OrganizationMapper organizationMapper() {
+        return OrganizationMapper.INSTANCE;
+    }
+
+    @Bean
+    public TaskMapper taskMapper() {
+        return TaskMapper.INSTANCE;
     }
 
 }

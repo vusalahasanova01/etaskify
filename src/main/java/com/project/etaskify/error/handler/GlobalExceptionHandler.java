@@ -1,9 +1,10 @@
 package com.project.etaskify.error.handler;
 
-import com.project.etaskify.error.exception.DuplicateUsernameException;
+import com.project.etaskify.error.exception.DuplicateFieldException;
 import com.project.etaskify.error.exception.EmailProviderException;
 import com.project.etaskify.error.exception.PasswordsNotMatchedException;
-import com.project.etaskify.error.exception.UserNotEnabledException;
+import com.project.etaskify.error.exception.OrganizationIsNotMatched;
+import com.project.etaskify.error.exception.TaskNotFoundException;
 import com.project.etaskify.error.exception.UserNotFoundException;
 import com.project.etaskify.error.exception.VerificationFailedException;
 import jakarta.validation.ConstraintViolation;
@@ -77,8 +78,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED.value()).body(errorMessage);
     }
 
-    @ExceptionHandler(UserNotEnabledException.class)
-    public ResponseEntity<ErrorMessage> handleUserNotEnabledException(UserNotEnabledException ex) {
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleUserNotFoundException(TaskNotFoundException ex) {
+        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED.value()).body(errorMessage);
+    }
+
+    @ExceptionHandler(OrganizationIsNotMatched.class)
+    public ResponseEntity<ErrorMessage> handleUserNotEnabledException(OrganizationIsNotMatched ex) {
         ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE.value()).body(errorMessage);
     }
@@ -89,8 +96,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.PROXY_AUTHENTICATION_REQUIRED.value()).body(errorMessage);
     }
 
-    @ExceptionHandler(DuplicateUsernameException.class)
-    public ResponseEntity<ErrorMessage> handleDuplicateUsernameException(DuplicateUsernameException ex) {
+    @ExceptionHandler(DuplicateFieldException.class)
+    public ResponseEntity<ErrorMessage> handleDuplicateUsernameException(DuplicateFieldException ex) {
         ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT.value()).body(errorMessage);
     }

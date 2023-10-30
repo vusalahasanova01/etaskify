@@ -3,6 +3,7 @@ create table IF NOT EXISTS user
     id              int auto_increment,
     username        varchar(255)  not null,
     email           varchar(255)  not null,
+    user_role       smallint      not null,
     password        varchar(1000) not null,
     organization_id int           null,
     constraint user_pk
@@ -12,4 +13,5 @@ create table IF NOT EXISTS user
     constraint user_organization_id_fk
         foreign key (organization_id) references organization (id)
 );
+
 

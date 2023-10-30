@@ -1,11 +1,14 @@
 package com.project.etaskify.model.entity;
 
+import com.project.etaskify.model.dto.UserRole;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 public class User implements UserDetails {
@@ -14,16 +17,19 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
-    private Integer organizationId;
+    private UserRole userRole;
+    private Long organizationId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(getUserRoleAsEnum().name()));
+        return authorities;
     }
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
     }
 
     @Override
@@ -51,4 +57,19 @@ public class User implements UserDetails {
         return true;
     }
 
+    public Integer getUserRole() {
+        return userRole.getId();
+    }
+
+    public UserRole getUserRoleAsEnum() {
+        return userRole;
+    }
+
+    public void setUserRole(Integer userRole) {
+        this.userRole = UserRole.of(userRole);
+    }
+
+    public void setUserRoleAsEnum(UserRole userRole) {
+        this.userRole = userRole;
+    }
 }

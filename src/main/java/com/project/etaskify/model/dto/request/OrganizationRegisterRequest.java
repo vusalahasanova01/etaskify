@@ -1,27 +1,24 @@
 package com.project.etaskify.model.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.etaskify.error.constraints.Email;
 import com.project.etaskify.error.constraints.ValidPassword;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import java.util.Objects;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Data
 public class OrganizationRegisterRequest {
 
-    @Email
-    private String email;
+    @Size(min = 1, max = 255)
+    private String username;
 
-    @ValidPassword
-    private String password;
+    @Size(min = 1, max = 255)
+    private String organizationName;
 
-    @ValidPassword
-    private String confirmPassword;
+    @Size(min = 1, max = 20)
+    private String phoneNumber;
 
-    @JsonIgnore
-    public boolean isPasswordsMatched() {
-        return Objects.nonNull(password) && password.equals(confirmPassword);
-    }
+    @Size(min = 1, max = 255)
+    private String address;
 
 }

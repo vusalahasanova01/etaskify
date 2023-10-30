@@ -1,31 +1,30 @@
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://allinone.cn5daduvgses.us-east-1.rds.amazonaws.com:3306
-    username: admin
-    password: Admin1234
+    url: #your database url
+    username: #your database username
+    password: #your database password
     hikari:
       auto-commit: false
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.yaml
-
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    username: todolistorganization@gmail.com
-#    password: rgankytzymfbyphy
-#    protocol: smtp
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: todolistorganization@gmail.com
+    password: rgankytzymfbyphy
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 mybatis:
   config-location: classpath:db/mybatis/mybatis-config.xml
   mapper-locations: classpath:db/mybatis/mapper/*.xml
-  type-aliases-package: com.project.etaskify.repository
+  type-aliases-package: com.project.etaskify.model.entity
 
 server:
   port: 5000
